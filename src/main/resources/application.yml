@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: "jdbc:mysql://lgfollow.c1iieci4ebha.ap-northeast-2.rds.amazonaws.com:3306/lg_follow"
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      idle-timeout: 30000
+
+  jpa:
+    hibernate:
+      ddl-auto: update # 데이터베이스 스키마 자동 관리
+    show-sql: true # 실행되는 SQL 쿼리 로그 출력
+    properties:
+      hibernate:
+        format_sql: true # SQL 쿼리 포맷팅
+
+
+  docker:
+    compose:
+      enabled: false

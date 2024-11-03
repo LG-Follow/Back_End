@@ -1,0 +1,49 @@
+package com.example.lgfollow_server.model;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+
+@Entity
+@Table(name = "song")
+public class Song {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "promptId")
+    @JsonBackReference
+    private Prompt prompt;
+
+    @Column
+    private String title;
+
+    @Column(nullable = true)
+    private String description;
+
+    @Column
+    private String songUrl;
+
+    @Column
+    private double size;
+
+    @Column
+    private LocalTime duration;
+
+    @Column
+    private LocalDateTime createdAt;
+
+}
