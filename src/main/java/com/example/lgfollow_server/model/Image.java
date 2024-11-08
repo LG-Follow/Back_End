@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -34,25 +35,17 @@ public class Image {
     private String imageType;
 
     @Column
-    private double width;
-
-    @Column
-    private double height;
-
-    @Column
-    private double size;
-
-    @Column
     private boolean isActive;
 
     @Column
-    private int version;
+    private Long version;
 
-    @Column
+    @Column(updatable = false)
+    @CreationTimestamp
     private LocalDateTime createdAt;
 
     @OneToOne(mappedBy = "image")
     @JsonManagedReference
-    private Image image;
+    private Prompt prompt;
 
 }
