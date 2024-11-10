@@ -16,4 +16,5 @@ public class ImageSendDto {
     private String image_url;
     private boolean isActive;
     private Long version;
+    private String generatedPrompt; // prompt 추가
 }
