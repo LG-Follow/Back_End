@@ -6,19 +6,32 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.example.lgfollow_server.config.S3Config;
 import com.example.lgfollow_server.dto.ImageSendDto;
+import com.example.lgfollow_server.dto.PromptGetDto;
 import com.example.lgfollow_server.model.Image;
+import com.example.lgfollow_server.model.Prompt;
 import com.example.lgfollow_server.model.Users;
 import com.example.lgfollow_server.repository.ImageRepository;
+import com.example.lgfollow_server.repository.PromptRepository;
 import com.example.lgfollow_server.repository.UsersRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.common.internals.Topic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 
 @Service
+@RequiredArgsConstructor(onConstructor_ = {@Autowired})
+@Slf4j
 public class ImageService {
     private final AmazonS3 s3Client;
 
@@ -27,11 +40,16 @@ public class ImageService {
 
     private final ImageRepository imageRepository;
     private final UsersRepository usersRepository;
+    private final PromptRepository promptRepository;
+    private final KafkaTemplate<String, Object> kafkaTemplate;
+    private static final String Topic = "image-topic";
 
-    public ImageService(ImageRepository imageRepository, AmazonS3 s3Client, UsersRepository usersRepository) {
+    public ImageService(ImageRepository imageRepository, AmazonS3 s3Client, UsersRepository usersRepository, KafkaTemplate<String, Object> kafkaTemplate, PromptRepository promptRepository) {
         this.imageRepository = imageRepository;
         this.s3Client = s3Client;
         this.usersRepository = usersRepository;
+        this.kafkaTemplate = kafkaTemplate;
+        this.promptRepository = promptRepository;
     }
 
 
@@ -66,5 +84,23 @@ public class ImageService {
         imageSendDto.setActive(is_active);
 
         return imageSendDto;
+    }
+
+    public void sendToFlask(ImageSendDto imageSendDto) {
+        kafkaTemplate.send(Topic, imageSendDto);
+        System.out.println("send Image Data: " + imageSendDto);
+    }
+
+    @Transactional
+    @KafkaListener(topics = "prompt-topic")
+    public void getPrompt(PromptGetDto promptGetDto) {
+        log.info("Get Prompt: " + promptGetDto);
+
+        Prompt prompt = new Prompt();
+        prompt.setImage(imageRepository.findById(promptGetDto.getImage_id()).orElse(null));
+        prompt.setPromptText(promptGetDto.getPrompt_text());
+        prompt.setCreatedAt(LocalDateTime.now());
+
+        promptRepository.save(prompt);
     }
 }
