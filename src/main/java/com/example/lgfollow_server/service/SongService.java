@@ -59,4 +59,28 @@ public class SongService {
 
         return songRepository.save(song);
     }
+
+    // 사용자 ID로 노래 목록 조회 메서드
+    public List<Song> getSongsByUserId(Long userId) {
+        return songRepository.findAllByUserId(userId);
+    }
+
+    // 노래 id 받고 그 노래 정보 조회 메서드
+    public SongDTO getSongById(Long id) {
+        Optional<Song> songOptional = songRepository.findById(id);
+        if (songOptional.isEmpty()) {
+            throw new IllegalArgumentException("Song not found for ID: " + id);
+        }
+        
+        Song song = songOptional.get();
+        return new SongDTO(
+                song.getId(),
+                song.getTitle(),
+                song.getDescription(),
+                song.getSongUrl(),
+                song.getSize(),
+                song.getDuration(),
+                song.getCreatedAt()
+        );
+    }
 }
