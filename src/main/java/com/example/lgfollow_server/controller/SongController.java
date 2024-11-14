@@ -1,8 +1,15 @@
 package com.example.lgfollow_server.controller;
 
+import com.example.lgfollow_server.dto.SongDto;
+import com.example.lgfollow_server.model.Song;
 import com.example.lgfollow_server.service.SongService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/song")
@@ -22,8 +29,8 @@ public class SongController {
 
     // 노래 id 받고 그 노래 정보 조회
     @GetMapping("/{id}")
-    public ResponseEntity<SongDTO> getSongById(@PathVariable Long id) {
-        SongDTO songDTO = songService.getSongById(id);
-        return ResponseEntity.ok(songDTO);
+    public ResponseEntity<SongDto> getSongById(@PathVariable Long id) {
+        SongDto songDto = songService.getSongById(id);
+        return ResponseEntity.ok(songDto);
     }
 }
