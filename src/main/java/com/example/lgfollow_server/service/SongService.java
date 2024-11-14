@@ -21,7 +21,7 @@ public class SongService {
     private final PromptRepository promptRepository;
     private final SongRepository songRepository;
     private final RestTemplate restTemplate;
-    private final String sunoApiUrl = "http://localhost:3000/generate-music"; // Suno API 서버 URL
+    private final String sunoApiUrl = "http://localhost:3000/generate"; // Suno API 서버 URL
 
     @Autowired
     public SongService(PromptRepository promptRepository, SongRepository songRepository, RestTemplate restTemplate) {
