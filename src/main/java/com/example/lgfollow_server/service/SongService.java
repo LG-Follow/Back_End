@@ -1,5 +1,6 @@
 package com.example.lgfollow_server.service;
 
+import com.example.lgfollow_server.dto.SongDto;
 import com.example.lgfollow_server.model.Prompt;
 import com.example.lgfollow_server.model.Song;
 import com.example.lgfollow_server.repository.PromptRepository;
@@ -13,6 +14,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 
 import java.time.LocalTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -52,7 +54,7 @@ public class SongService {
         Song song = new Song();
         song.setPrompt(prompt);
         song.setTitle("Generated Song"); // 기본 제목, 필요시 수정 가능
-        song.setDescription(prompt);
+        song.setDescription(prompt.getPromptText());
         song.setSongUrl(songUrl);
         song.setSize(5); // 걍 5로함
         song.setDuration(LocalTime.of(0, 3, 30)); // 3분 30초 예시
@@ -66,14 +68,14 @@ public class SongService {
     }
 
     // 노래 id 받고 그 노래 정보 조회 메서드
-    public SongDTO getSongById(Long id) {
+    public SongDto getSongById(Long id) {
         Optional<Song> songOptional = songRepository.findById(id);
         if (songOptional.isEmpty()) {
             throw new IllegalArgumentException("Song not found for ID: " + id);
         }
         
         Song song = songOptional.get();
-        return new SongDTO(
+        return new SongDto(
                 song.getId(),
                 song.getTitle(),
                 song.getDescription(),
