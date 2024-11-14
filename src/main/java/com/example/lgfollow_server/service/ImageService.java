@@ -43,6 +43,7 @@ public class ImageService {
     private final PromptRepository promptRepository;
     private final KafkaTemplate<String, Object> kafkaTemplate;
     private static final String Topic = "image-topic";
+    private final SongService songService;  // SongService 주입1
 
     public ImageService(ImageRepository imageRepository, AmazonS3 s3Client, UsersRepository usersRepository, KafkaTemplate<String, Object> kafkaTemplate, PromptRepository promptRepository) {
         this.imageRepository = imageRepository;
@@ -50,6 +51,7 @@ public class ImageService {
         this.usersRepository = usersRepository;
         this.kafkaTemplate = kafkaTemplate;
         this.promptRepository = promptRepository;
+        this.songService = songService;  // SongService 초기화1
     }
 
 
@@ -102,5 +104,7 @@ public class ImageService {
         prompt.setCreatedAt(LocalDateTime.now());
 
         promptRepository.save(prompt);
+        // 프롬프트 저장 후 SongService를 호출하여 노래 생성1 Id로 프롬프트 가져옴
+        songService.generateSongFromPrompt(prompt.getId());
     }
 }
