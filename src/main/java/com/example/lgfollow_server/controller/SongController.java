@@ -6,6 +6,7 @@ import com.example.lgfollow_server.service.SongService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -33,4 +34,12 @@ public class SongController {
         SongDto songDto = songService.getSongById(id);
         return ResponseEntity.ok(songDto);
     }
+
+    //test
+    // @PostMapping("/generate/{promptId}")
+    // public ResponseEntity<List<Song>> generateSongFromPrompt(@PathVariable Long promptId) {
+    //     List<Song> songs = songService.generateSongFromPrompt(promptId);
+    //     return ResponseEntity.ok(songs);
+    // }
+
 }
