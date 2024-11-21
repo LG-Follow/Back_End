@@ -9,11 +9,14 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+
 
 @Entity
 @Table(name = "prompt")
@@ -33,8 +36,8 @@ public class Prompt {
     @Column
     private LocalDateTime createdAt;
 
-    @OneToOne(mappedBy = "prompt")
+    @OneToMany(mappedBy = "prompt", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
-    private Song song;
+    private List<Song> songs = new ArrayList<>();
 
 }

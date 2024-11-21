@@ -24,8 +24,8 @@ public class Song {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "promptId")
+    @ManyToOne
+    @JoinColumn(name = "prompt_id", nullable = false)
     @JsonBackReference
     private Prompt prompt;
 

@@ -8,6 +8,7 @@ import com.example.lgfollow_server.service.SongService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
 import java.util.List;
 
 @RestController
@@ -46,5 +47,11 @@ public class SongController {
         songSendService.playSong();
         return "success";
     }
+    //test
+    // @PostMapping("/generate/{promptId}")
+    // public ResponseEntity<List<Song>> generateSongFromPrompt(@PathVariable Long promptId) {
+    //     List<Song> songs = songService.generateSongFromPrompt(promptId);
+    //     return ResponseEntity.ok(songs);
+    // }
 
 }
