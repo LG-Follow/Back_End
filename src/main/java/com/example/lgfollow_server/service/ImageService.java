@@ -45,7 +45,7 @@ public class ImageService {
     private static final String Topic = "image-topic";
     private final SongService songService;  // SongService 주입1
 
-    public ImageService(ImageRepository imageRepository, AmazonS3 s3Client, UsersRepository usersRepository, KafkaTemplate<String, Object> kafkaTemplate, PromptRepository promptRepository) {
+    public ImageService(ImageRepository imageRepository, AmazonS3 s3Client, UsersRepository usersRepository, KafkaTemplate<String, Object> kafkaTemplate, PromptRepository promptRepository, SongService songService) {
         this.imageRepository = imageRepository;
         this.s3Client = s3Client;
         this.usersRepository = usersRepository;

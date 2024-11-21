@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: "jdbc:mysql://lgfollow.c1iieci4ebha.ap-northeast-2.rds.amazonaws.com:3306/lg_follow"
+    url: jdbc:mysql://lgfollow.c1iieci4ebha.ap-northeast-2.rds.amazonaws.com:3306/lg_follow?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
     hikari:
@@ -16,9 +16,5 @@ spring:
     properties:
       hibernate:
         format_sql: true # SQL 쿼리 포맷팅
+        # dialect: org.hibernate.dialect.MySQL8Dialect
 
-#  kafka:
-#    bootstrap-servers: kafka:29092
-#  docker:
-#    compose:
-#      enabled: false
