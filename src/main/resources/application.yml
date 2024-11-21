@@ -18,3 +18,13 @@ spring:
         format_sql: true # SQL 쿼리 포맷팅
         # dialect: org.hibernate.dialect.MySQL8Dialect
 
+  kafka:
+    listener:
+      ack-mode: manual
+
+#  kafka:
+#    bootstrap-servers: kafka:29092
+#  docker:
+#    compose:
+#      enabled: false
+

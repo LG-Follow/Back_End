@@ -35,7 +35,7 @@ public class Song {
     @Column(nullable = true)
     private String description;
 
-    @Column
+    @Column(columnDefinition = "TEXT")
     private String songUrl;
 
     @Column
@@ -48,8 +48,8 @@ public class Song {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    @OneToOne(mappedBy = "song")
-    @JsonManagedReference
-    private SongRequest songRequest;
+//    @OneToOne(mappedBy = "song")
+//    @JsonManagedReference
+//    private SongRequest songRequest;
 
 }
