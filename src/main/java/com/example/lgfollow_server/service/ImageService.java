@@ -45,7 +45,7 @@ public class ImageService {
     private static final String Topic = "image-topic";
     private final SongService songService;  // SongService 주입1
 
-    public ImageService(ImageRepository imageRepository, AmazonS3 s3Client, UsersRepository usersRepository, KafkaTemplate<String, Object> kafkaTemplate, PromptRepository promptRepository) {
+    public ImageService(ImageRepository imageRepository, AmazonS3 s3Client, UsersRepository usersRepository, KafkaTemplate<String, Object> kafkaTemplate, PromptRepository promptRepository, SongService songService) {
         this.imageRepository = imageRepository;
         this.s3Client = s3Client;
         this.usersRepository = usersRepository;
@@ -88,23 +88,30 @@ public class ImageService {
         return imageSendDto;
     }
 
-    public void sendToFlask(ImageSendDto imageSendDto) {
+    public boolean sendToFlask(ImageSendDto imageSendDto) {
         kafkaTemplate.send(Topic, imageSendDto);
         System.out.println("send Image Data: " + imageSendDto);
+        return true;
     }
 
     @Transactional
     @KafkaListener(topics = "prompt-topic")
     public void getPrompt(PromptGetDto promptGetDto) {
-        log.info("Get Prompt: " + promptGetDto);
+        try {
+            log.info("Get Prompt: " + promptGetDto);
 
-        Prompt prompt = new Prompt();
-        prompt.setImage(imageRepository.findById(promptGetDto.getImage_id()).orElse(null));
-        prompt.setPromptText(promptGetDto.getPrompt_text());
-        prompt.setCreatedAt(LocalDateTime.now());
+            Prompt prompt = new Prompt();
+            prompt.setImage(imageRepository.findById(promptGetDto.getImage_id()).orElse(null));
+            prompt.setPromptText(promptGetDto.getPrompt_text());
+            prompt.setCreatedAt(LocalDateTime.now());
 
-        promptRepository.save(prompt);
-        // 프롬프트 저장 후 SongService를 호출하여 노래 생성1 Id로 프롬프트 가져옴
-        songService.generateSongFromPrompt(prompt.getId());
+            promptRepository.save(prompt);
+            // 프롬프트 저장 후 SongService를 호출하여 노래 생성1 Id로 프롬프트 가져옴
+//            songService.generateSongFromPrompt(prompt.getId());
+
+        }
+        catch (Exception e) {
+            log.error("Error processing prompt", e);
+        }
     }
 }

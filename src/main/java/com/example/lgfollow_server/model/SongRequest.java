@@ -24,10 +24,10 @@ public class SongRequest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "songId")
-    @JsonBackReference
-    private Song song;
+//    @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "songId")
+//    @JsonBackReference
+//    private Song song;
 
     @Column(nullable = false)
     private String status;
