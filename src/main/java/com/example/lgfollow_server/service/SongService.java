@@ -20,6 +20,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class SongService {
@@ -81,26 +82,42 @@ public class SongService {
     }
 
     // 사용자 ID로 노래 목록 조회
-    public List<Song> getSongsByUserId(Long userId) {
-        return songRepository.findAllByPrompt_Image_User_Id(userId);
+    public List<SongDto> getSongsByUserId(Long userId) {
+        List<Song> songs = songRepository.findAllByPrompt_Image_User_Id(userId);
+        return songs.stream()
+            .map(song -> {
+                String imageUrl = song.getPrompt().getImage() != null ? song.getPrompt().getImage().getImageUrl() : null;
+                return new SongDto(
+                    song.getId(),
+                    song.getTitle(),
+                    song.getDescription(),
+                    song.getSongUrl(),
+                    song.getSize(),
+                    song.getDuration(),
+                    song.getCreatedAt(),
+                    imageUrl // 이미지 URL 추가함
+                );
+            })
+            .collect(Collectors.toList());
     }
+
 
     // 노래 ID로 노래 정보 조회
-    public SongDto getSongById(Long id) {
-        Optional<Song> songOptional = songRepository.findById(id);
-        if (songOptional.isEmpty()) {
-            throw new IllegalArgumentException("Song not found for ID: " + id);
-        }
+    // public SongDto getSongById(Long id) {
+    //     Optional<Song> songOptional = songRepository.findById(id);
+    //     if (songOptional.isEmpty()) {
+    //         throw new IllegalArgumentException("Song not found for ID: " + id);
+    //     }
 
-        Song song = songOptional.get();
-        return new SongDto(
-                song.getId(),
-                song.getTitle(),
-                song.getDescription(),
-                song.getSongUrl(),
-                song.getSize(),
-                song.getDuration(),
-                song.getCreatedAt()
-        );
-    }
+    //     Song song = songOptional.get();
+    //     return new SongDto(
+    //             song.getId(),
+    //             song.getTitle(),
+    //             song.getDescription(),
+    //             song.getSongUrl(),
+    //             song.getSize(),
+    //             song.getDuration(),
+    //             song.getCreatedAt()
+    //     );
+    // }
 }

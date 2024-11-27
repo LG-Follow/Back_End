@@ -26,7 +26,7 @@ public class UserDevice {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("deviceId")
-    @JoinColumn(name = "deviceId")
+    @JoinColumn(name = "device_id") //deviceId -> device_id
     @JsonBackReference
     private Device device;
 
