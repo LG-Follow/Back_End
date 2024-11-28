@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/user-device")
@@ -23,6 +24,19 @@ public class UserDeviceController {
         List<UserDevice> userDevices = userDeviceService.getUserDevicesByUserId(userId);
         return ResponseEntity.ok(userDevices);
     }
+
+    // QR코드로 기기 등록
+    @PostMapping("/add")
+    public ResponseEntity<String> addDeviceToUser(@RequestBody Map<String, String> qrData, @RequestParam Long userId) {
+        try {
+            userDeviceService.addDeviceToUser(qrData, userId);
+            return ResponseEntity.ok("Device added successfully!");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
+        }
+    }
+
+
     // 온오프 기능
     @PostMapping("/toggle/{id}")
     public ResponseEntity<UserDevice> toggleDeviceStatus(@PathVariable Long id) {
