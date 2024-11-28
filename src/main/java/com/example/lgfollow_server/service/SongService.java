@@ -69,9 +69,16 @@ public class SongService {
         List<Song> savedSongs = new ArrayList<>();
         for (SunoApiResponse songResponse : songResponses) {
             Song song = new Song();
+
+            String description = songResponse.getLyric();
+            int maxDescriptionLength = 255;
+            if (description.length() > maxDescriptionLength) {
+                description = description.substring(0, maxDescriptionLength);  // 255자까지만 자르기
+            }
+
             song.setPrompt(prompt);
             song.setTitle(songResponse.getTitle().isEmpty() ? "Generated Song" : songResponse.getTitle());
-            song.setDescription(songResponse.getLyric());
+            song.setDescription(description);
             song.setSongUrl(songResponse.getAudio_url());
             song.setSize(5.0); // 기본값 설정
             song.setDuration(LocalTime.of(0, 3, 30)); // 고정된 3분 30초

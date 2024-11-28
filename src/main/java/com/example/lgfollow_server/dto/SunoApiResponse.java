@@ -1,10 +1,13 @@
 package com.example.lgfollow_server.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class SunoApiResponse {
     private String id;
     private String title;
