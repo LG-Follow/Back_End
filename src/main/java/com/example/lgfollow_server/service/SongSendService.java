@@ -33,6 +33,10 @@ public class SongSendService {
     }
 
     public void handleMotionDetected(String room){
+        if (currentSong == null) {
+            System.err.println("Error: No song is currently loaded.");
+            return; // 더 이상 진행하지 않음
+        }
         rooms.put(room, true);
         startMusicInRoom(room, currentSong.getSongUrl(), currentTime);
     }
@@ -46,17 +50,20 @@ public class SongSendService {
     public void updateCurrentTime() {
         if (isAnyRoomActive()) {
             currentTime++;
+            System.out.println("Updated time: " + currentTime);
         }
     }
 
     private void startMusicInRoom(String room, String url, int startTime) {
         String message = String.format("{\"url\": \"%s\", \"currentTime\": %d}", url, startTime);
         mqttGateway.send("sensor/pir/" + room, message);
+        System.out.println("음악 보내기 성공");
     }
 
     private void stopMusicInRoom(String room) {
         String message = "{\"stop\": true}";
         mqttGateway.send("sensor/pir/" + room, message);
+        System.out.println("음악 중지 보내기 성공");
     }
 
     private boolean isAnyRoomActive() {
