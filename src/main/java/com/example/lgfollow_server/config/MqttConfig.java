@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.integration.channel.DirectChannel;
 import org.springframework.integration.mqtt.core.DefaultMqttPahoClientFactory;
 import org.springframework.integration.mqtt.core.MqttPahoClientFactory;
@@ -20,7 +21,7 @@ import org.springframework.messaging.MessageHandler;
 @Configuration
 public class MqttConfig {
 
-    private static final String MQTT_BROKER_URL = "tcp://localhost:1883";
+    private static final String MQTT_BROKER_URL = "tcp://192.168.25.39:1883";
     private static final String CLIENT_ID = "spring";
     private static final String[] TOPICS = {"sensor/pir/#"};
 
@@ -50,6 +51,7 @@ public class MqttConfig {
     }
 
     @Bean
+    @ServiceActivator(inputChannel = "mqttOutputChannel")
     public MessageHandler mqttOutputHandler() { //  MQTT 송신 핸들러를 설정하고 빈으로 등록합니다.
         MqttPahoMessageHandler messageHandler = new MqttPahoMessageHandler(CLIENT_ID + "_outbound", mqttClientFactory()); // 송신 핸들러 생성 시 클라이언트 ID와 MQTT 클라이언트 팩토리를 설정합니다.
         messageHandler.setAsync(true); // 비동기적으로 메시지를 전송하도록 설정
