@@ -22,5 +22,5 @@ public class SongDto {
     private double size;
     private LocalTime duration;
     private LocalDateTime createdAt;
-
+    private String image_url; //url 추가함
 }

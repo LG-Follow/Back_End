@@ -17,7 +17,7 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)  // CSRF 보호를 비활성화
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/user/**", "/image/**", "/song/**").permitAll()  // 인증 없이 접근 가능
+                        .requestMatchers("/user/**", "/image/**", "/song/**", "/user-device/**").permitAll()  // 인증 없이 접근 가능
                         .anyRequest().authenticated()  // 다른 모든 요청은 인증 필요
                 );;
 

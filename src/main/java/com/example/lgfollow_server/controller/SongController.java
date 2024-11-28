@@ -27,17 +27,16 @@ public class SongController {
     
     // 사용자 ID를 사용해 노래 목록 조회
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Song>> getSongsByUserId(@PathVariable Long userId) {
-        List<Song> songs = songService.getSongsByUserId(userId);
-        return ResponseEntity.ok(songs);
+    public List<SongDto> getSongsByUserId(@PathVariable Long userId) {
+        return songService.getSongsByUserId((userId));
     }
 
     // 노래 id 받고 그 노래 정보 조회
-    @GetMapping("/{id}")
-    public ResponseEntity<SongDto> getSongById(@PathVariable Long id) {
-        SongDto songDto = songService.getSongById(id);
-        return ResponseEntity.ok(songDto);
-    }
+    // @GetMapping("/{id}")
+    // public ResponseEntity<SongDto> getSongById(@PathVariable Long id) {
+    //     SongDto songDto = songService.getSongById(id);
+    //     return ResponseEntity.ok(songDto);
+    // }
 
     @PostMapping("/play/{id}")
     public String playSong(@PathVariable Long id) {
