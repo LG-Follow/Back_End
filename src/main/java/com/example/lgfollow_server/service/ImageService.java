@@ -107,7 +107,7 @@ public class ImageService {
 
             promptRepository.save(prompt);
             // 프롬프트 저장 후 SongService를 호출하여 노래 생성1 Id로 프롬프트 가져옴
-            songService.generateSongFromPrompt(prompt.getId());
+//            songService.generateSongFromPrompt(prompt.getId());
 
         }
         catch (Exception e) {

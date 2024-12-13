@@ -21,8 +21,8 @@ import org.springframework.messaging.MessageHandler;
 @Configuration
 public class MqttConfig {
 
-    private static final String MQTT_BROKER_URL = "tcp://192.168.25.39:1883";
-    private static final String CLIENT_ID = "spring";
+    private static final String MQTT_BROKER_URL = "tcp://MQTT_BOROKER_IP:1883";
+    private static final String CLIENT_ID = "spring_client";
     private static final String[] TOPICS = {"sensor/pir/#"};
 
     @Bean
