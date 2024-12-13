@@ -17,7 +17,7 @@ public class KafkaConsumerConfig {
     @Bean
     public ConsumerFactory<String, Object> consumerFactory() {
         Map<String, Object> properties = new HashMap<>();
-        properties.put("bootstrap.servers", "192.168.25.39:9092");
+        properties.put("bootstrap.servers", "KAFKA_BOROKER_IP:9092");
         properties.put("group.id", "lgfollow_server");
         properties.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         properties.put("value.deserializer", "org.springframework.kafka.support.serializer.JsonDeserializer");

@@ -43,7 +43,7 @@ public class SongController {
         Song song = songRepository.findById(id).orElse(null);
         songSendService.setCurrentSong(song);
         songSendService.setCurrentTime(0);
-        songSendService.playSong();
+        songSendService.playInitialSong();
         return "success";
     }
     //test
